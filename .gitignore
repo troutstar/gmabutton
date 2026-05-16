@@ -1,0 +1,12 @@
+build/
+managed_components/
+*.pyc
+__pycache__/
+.idea/
+*.swp
+.claude/settings.local.json
+.wolf/hooks/_session.json
+.wolf/token-ledger.json
+.wolf/cron-state.json
+.wolf/suggestions.json
+.wolf/designqc-captures/

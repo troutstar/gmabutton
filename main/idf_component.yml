@@ -1,0 +1,7 @@
+## ESP-IDF component manifest for the main component.
+## esp_wireguard is fetched on first build via `idf.py reconfigure` or `idf.py build`.
+dependencies:
+  idf:
+    version: ">=5.0"
+  trombik/esp_wireguard:
+    version: ">=0.4.0"

@@ -1,0 +1,48 @@
+CONFIG_BT_ENABLED=n
+CONFIG_FREERTOS_HZ=1000
+CONFIG_ESP_WIFI_ENABLED=y
+
+# Trim WiFi static RX buffers to leave DMA-capable DRAM for the framebuffer.
+CONFIG_ESP_WIFI_STATIC_RX_BUFFER_NUM=4
+CONFIG_ESP_WIFI_DYNAMIC_RX_BUFFER_NUM=8
+CONFIG_ESP_WIFI_TX_BUFFER_TYPE=1
+CONFIG_ESP_WIFI_DYNAMIC_TX_BUFFER_NUM=8
+
+# Sockets: httpd + outgoing http client + a couple spares.
+CONFIG_LWIP_MAX_SOCKETS=10
+
+# HTTP server needs a few kB of stack.
+CONFIG_HTTPD_MAX_REQ_HDR_LEN=1024
+CONFIG_HTTPD_MAX_URI_LEN=512
+
+# Larger NVS partition so we can store WG keys (private key is 32 B base64).
+CONFIG_NVS_ENCRYPTION=n
+
+# Smaller mbedTLS footprint — we don't do TLS, plain HTTP only.
+CONFIG_MBEDTLS_TLS_CLIENT=n
+CONFIG_MBEDTLS_TLS_SERVER=n
+
+# WireGuard IDF v5 fix: enable PPP support to force LWIP_ESP_NETIF_DATA=1.
+# Without this, lwip_get_esp_netif() returns netif->state directly. WireGuard
+# sets netif->state to its own device struct (non-NULL), so the NULL guard in
+# esp_netif_internal_dhcpc_cb() passes and the code treats the WireGuard struct
+# as an esp_netif_t — crashing on the NULL ip_info pointer inside it.
+# With LWIP_ESP_NETIF_DATA=1 the lookup uses netif->client_data instead; the
+# WireGuard netif has none registered, so it correctly returns NULL and exits.
+CONFIG_ESP_NETIF_BRIDGE_EN=y
+
+# WireGuard: lwIP tcpip thread needs a much larger stack — wireguard
+# handshake/keepalive processing runs entirely inside this task
+# (udp_recv → wireguardif_network_rx → wireguard_process_handshake_response →
+#  wireguard_x25519 + chacha20poly1305 + nested lwip calls). The default
+# 3072 B will overflow the canary the moment the server's handshake
+# response arrives, rebooting the device. 12288 B leaves comfortable
+# headroom.
+CONFIG_LWIP_TCPIP_TASK_STACK_SIZE=4096
+
+# WireGuard: explicitly select the lightweight refc x25519. The NaCL
+# reference implementation pushes ~4 KB of locals onto the caller's stack
+# inside crypto_scalarmult/mainloop and is the wrong choice for any
+# crypto path that runs in the lwIP tcpip task.
+CONFIG_WIREGUARD_x25519_IMPLEMENTATION_DEFAULT=y
+# CONFIG_WIREGUARD_x25519_IMPLEMENTATION_NACL is not set

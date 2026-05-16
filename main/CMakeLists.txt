@@ -1,0 +1,28 @@
+idf_component_register(
+    SRCS
+        "main.c"
+        "ili9341.c"
+        "draw.c"
+        "led.c"
+        "touch.c"
+        "screensaver.c"
+        "alert.c"
+        "nvs_config.c"
+        "wifi_manager.c"
+        "wireguard_mgr.c"
+        "http_server.c"
+        "peer_comms.c"
+    INCLUDE_DIRS "."
+    REQUIRES
+        nvs_flash
+        esp_wifi
+        esp_event
+        esp_netif
+        esp_http_server
+        esp_http_client
+        lwip
+        driver
+        spi_flash
+        esp_timer
+        json
+)
