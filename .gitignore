@@ -10,3 +10,9 @@ __pycache__/
 .wolf/cron-state.json
 .wolf/suggestions.json
 .wolf/designqc-captures/
+
+# Device credentials — never commit these
+DEVICE_CONFIG.md
+*_nvs.csv
+*_nvs.bin
+*_config.bin
