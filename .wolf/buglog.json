@@ -1,4 +1,17 @@
 {
   "version": 1,
-  "bugs": []
+  "bugs": [
+    {
+      "id": "bug-001",
+      "timestamp": "2026-05-17",
+      "error_message": "COM5 boot loop: invalid header 0x22294745 after reflash",
+      "file": "flashtool/firmware/gmabutton.bin",
+      "root_cause": "gmabutton.bin is a raw app partition binary. Flashing it at 0x0 overwrites the bootloader with app data — device cannot boot. Additionally, passing merged binary + NVS config in a single esptool write_flash command errors with 'Detected overlap at address: 0x9000' because the merged binary already covers the NVS region.",
+      "fix": "Two separate esptool commands: (1) idf.py merge-bin -o <absolute_path>/gmabutton_merged.bin, then flash merged at 0x0. (2) flash gmabutton1_config.bin at 0x9000 as a separate esptool call. Both verified with hash. Device restored.",
+      "tags": ["flash", "bootloader", "merge-bin", "esptool", "nvs", "com5"],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-17"
+    }
+  ]
 }
