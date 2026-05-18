@@ -84,7 +84,7 @@ static esp_err_t start_sta(void)
     esp_wifi_set_config(WIFI_IF_STA, &wc);
     esp_wifi_start();
 
-    setenv("TZ", "UTC0", 1);
+    setenv("TZ", "PST8PDT,M3.2.0,M11.1.0", 1);
     tzset();
     xTaskCreatePinnedToCore(time_task, "time", 2048, NULL, 2, NULL, 0);
     return ESP_OK;

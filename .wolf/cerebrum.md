@@ -12,11 +12,12 @@
 ## Key Learnings
 
 - **Project:** gmabutton
-- **Deployed devices:** gmabutton1=COM5 (MAC a4:f0:0f:8d:1d:e0, WiFi 192.168.86.164, WG 10.8.0.4), gmabutton2=COM7 (WiFi 192.168.86.163, WG 10.8.0.5). NVS credentials in `flashtool/firmware/gmabutton1_config.bin` and `gmabutton2_config.bin`.
-- **Flash artifact:** `flashtool/firmware/gmabutton.bin` is a RAW APP binary — do NOT flash at 0x0. Run `idf.py merge-bin -o flashtool/firmware/gmabutton_merged.bin` first. Flash merged at 0x0, then NVS config at 0x9000.
+- **Deployed devices:** gmabutton1=COM5 (MAC a4:f0:0f:8d:1d:e0, WiFi 192.168.86.164, WG 10.8.0.4), gmabutton2=COM7 (MAC e0:8c:fe:32:e7:3c, WiFi 192.168.86.163, WG 10.8.0.5). NVS credentials in `gmabutton1_nvs.bin` and `gmabutton2_nvs.bin` (project root). Flash at 0x9000 as a separate esptool call after the merged binary.
+- **Flash artifact:** `build/gmabutton.bin` is a RAW APP binary — do NOT flash at 0x0. Run merge-bin manually via `python -m esptool --chip esp32 merge_bin -o gmabutton_merged.bin -f raw --flash_mode dio --flash_freq 40m --flash_size 2MB 0x1000 build\bootloader\bootloader.bin 0x8000 build\partition_table\partition-table.bin 0x10000 build\gmabutton.bin` (output goes to project root). Flash merged at 0x0, then NVS config at 0x9000. Do NOT use `idf.py merge-bin -o <path>` — esptool cds into build/ and the output dir must already exist.
 - **gmabutton architecture:** ESP32 CYD pair. Hold ~1.5s = blue "call me", hold ~3.5s = red "help me". Receiver flashes screen+LED until acknowledged. Dismiss: ~0.5s hold → overlay → quick tap. 10s hold = factory reset / SoftAP wizard at 192.168.4.1. WireGuard client-only to 192.168.86.5:51820. SNTP UTC.
 - **LED hardware:** GPIO 4 (led_blue, B channel) dead on deployed boards. GPIO 17 (led_red, R channel) is the only working LED colour (actually blue on hardware). Both CALL and HELP receiver flash use led_red().
 - **HTTP propagation rule:** /api/alert and /api/dismiss apply state locally ONLY — they do NOT call peer_send(). Only gesture-initiated events propagate. Prevents ping-pong loops.
+- **Timezone:** User is in California. TZ string `PST8PDT,M3.2.0,M11.1.0` set in `wifi_manager.c` `start_sta()`. SNTP syncs UTC from pool.ntp.org; `localtime_r` applies the TZ offset.
 
 ## Do-Not-Repeat
 

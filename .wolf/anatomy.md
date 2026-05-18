@@ -1,7 +1,11 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-16T23:20:12.499Z
-> Files: 81 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-18T08:29:54.869Z
+> Files: 82 tracked | Anatomy hits: 0 | Misses: 0
+
+## ../../../.claude/projects/C--Users-Troutstar-Desktop-Ideas-gmabutton/memory/
+
+- `feedback_flash_permissions.md` (~202 tok)
 
 ## ./
 
@@ -14,7 +18,7 @@
 
 ## .claude/
 
-- `settings.json` (~441 tok)
+- `settings.json` (~518 tok)
 - `settings.local.json` (~167 tok)
 
 ## .claude/rules/
@@ -43,11 +47,11 @@
 - `nvs_config.h` — pragma once (~144 tok)
 - `peer_comms.c` — include "peer_comms.h" (~620 tok)
 - `peer_comms.h` — pragma once (~61 tok)
-- `screensaver.c` — include "screensaver.h" (~1344 tok)
+- `screensaver.c` — include "screensaver.h" (~1360 tok)
 - `screensaver.h` — pragma once (~118 tok)
 - `touch.c` — include "touch.h" (~1248 tok)
 - `touch.h` — pragma once (~337 tok)
-- `wifi_manager.c` — include "wifi_manager.h" (~1152 tok)
+- `wifi_manager.c` — include "wifi_manager.h" (~1080 tok)
 - `wifi_manager.h` — pragma once (~102 tok)
 - `wireguard_mgr.c` — include "wireguard_mgr.h" (~1125 tok)
 - `wireguard_mgr.h` — pragma once (~114 tok)

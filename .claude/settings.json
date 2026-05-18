@@ -1,4 +1,15 @@
 {
+  "permissions": {
+    "allow": [
+      "PowerShell(idf.py *)",
+      "PowerShell(python -m esptool *)",
+      "PowerShell(esptool.py *)",
+      "PowerShell(New-Item *)",
+      "Bash(idf.py *)",
+      "Bash(python -m esptool *)",
+      "Bash(esptool.py *)"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {

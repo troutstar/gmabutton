@@ -8,10 +8,49 @@
       "file": "flashtool/firmware/gmabutton.bin",
       "root_cause": "gmabutton.bin is a raw app partition binary. Flashing it at 0x0 overwrites the bootloader with app data — device cannot boot. Additionally, passing merged binary + NVS config in a single esptool write_flash command errors with 'Detected overlap at address: 0x9000' because the merged binary already covers the NVS region.",
       "fix": "Two separate esptool commands: (1) idf.py merge-bin -o <absolute_path>/gmabutton_merged.bin, then flash merged at 0x0. (2) flash gmabutton1_config.bin at 0x9000 as a separate esptool call. Both verified with hash. Device restored.",
-      "tags": ["flash", "bootloader", "merge-bin", "esptool", "nvs", "com5"],
+      "tags": [
+        "flash",
+        "bootloader",
+        "merge-bin",
+        "esptool",
+        "nvs",
+        "com5"
+      ],
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-17"
+    },
+    {
+      "id": "bug-002",
+      "timestamp": "2026-05-18T07:47:39.987Z",
+      "error_message": "Incorrect value in code",
+      "file": "main/wifi_manager.c",
+      "root_cause": "Had \"UTC0\"",
+      "fix": "Changed to \"PST8PDT,M3.2.0,M11.1.0\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "c"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-18T07:47:39.987Z"
+    },
+    {
+      "id": "bug-003",
+      "timestamp": "2026-05-18T08:26:57.738Z",
+      "error_message": "Significant refactor of ",
+      "file": "main/screensaver.c",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 4→10 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "c"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-18T08:26:57.738Z"
     }
   ]
 }

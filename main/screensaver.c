@@ -10,7 +10,7 @@
 
 #define N_PARTICLES   24
 #define HISTORY_LEN    6
-#define OVERLAY_H     18
+#define OVERLAY_H     24
 
 typedef struct {
     float x, y;
@@ -107,21 +107,28 @@ static void draw_overlay(uint16_t *fb)
     /* dark band across the top */
     draw_fill_rect(fb, 0, 0, SCREEN_W, OVERLAY_H, COL_DKGRAY);
 
-    /* device name on the left */
-    draw_str(fb, 4, 5, g_ctx.device_name, COL_CYAN, 1);
+    /* device name on the left — scale 2 */
+    draw_str(fb, 4, 5, g_ctx.device_name, COL_CYAN, 2);
 
-    /* time centred */
-    const char *t = g_ctx.time_str[0] ? g_ctx.time_str : "--:--:--";
-    draw_str(fb, SCREEN_W / 2 - 24, 5, t, COL_WHITE, 1);
+    /* time centred in the gap between device name and status icons */
+    const char *t = g_ctx.time_str[0] ? g_ctx.time_str : "--:--";
+    char t5[6] = { t[0], t[1], t[2], t[3], t[4], '\0' };
+    int name_len = 0;
+    for (const char *p = g_ctx.device_name; *p; ++p) name_len++;
+    int name_end     = 4 + name_len * 6 * 2;
+    int status_start = SCREEN_W - 52;
+    int time_w       = 5 * 6 * 2;
+    int time_x       = name_end + (status_start - name_end - time_w) / 2;
+    draw_str(fb, time_x, 5, t5, COL_WHITE, 2);
 
-    /* status indicators on the right: WiFi + WG dots */
+    /* status indicators on the right: WiFi + WG — scale 2, 8×8 dots */
     uint16_t wifi_c = g_ctx.wifi_connected ? COL_GREEN : COL_RED;
     uint16_t wg_c   = g_ctx.wg_connected   ? COL_GREEN :
                       (g_ctx.wg_endpoint[0] ? COL_YELLOW : COL_GRAY);
-    draw_str     (fb, SCREEN_W - 56, 5, "W",   wifi_c, 1);
-    draw_fill_rect(fb, SCREEN_W - 46, 6, 6, 6, wifi_c);
-    draw_str     (fb, SCREEN_W - 30, 5, "V",   wg_c,   1);
-    draw_fill_rect(fb, SCREEN_W - 20, 6, 6, 6, wg_c);
+    draw_str     (fb, SCREEN_W - 52, 5, "W",   wifi_c, 2);
+    draw_fill_rect(fb, SCREEN_W - 38, 8, 8, 8, wifi_c);
+    draw_str     (fb, SCREEN_W - 26, 5, "V",   wg_c,   2);
+    draw_fill_rect(fb, SCREEN_W - 12, 8, 8, 8, wg_c);
 }
 
 void screensaver_render_strip(uint16_t *fb)
