@@ -51,6 +51,150 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-18T08:26:57.738Z"
+    },
+    {
+      "id": "bug-004",
+      "timestamp": "2026-05-21T07:07:57.915Z",
+      "error_message": "Incorrect value in code",
+      "file": "main/screensaver.c",
+      "root_cause": "Had \"screensaver.h\"",
+      "fix": "Changed to \"screensaver_noofcyd.h\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "c"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T07:07:57.915Z"
+    },
+    {
+      "id": "bug-005",
+      "timestamp": "2026-05-21T07:08:05.979Z",
+      "error_message": "Wrong reference: screensaver_render_strip should be noofcyd_render_strip",
+      "file": "main/screensaver.c",
+      "root_cause": "Used \"screensaver_render_strip\" instead of \"noofcyd_render_strip\"",
+      "fix": "Changed screensaver_render_strip → noofcyd_render_strip",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "c"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T07:08:05.979Z"
+    },
+    {
+      "id": "bug-006",
+      "timestamp": "2026-05-21T07:09:11.327Z",
+      "error_message": "Significant refactor of ",
+      "file": "main/app_state.h",
+      "root_cause": "4 lines replaced/restructured",
+      "fix": "Rewrote 7→10 lines (4 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "h"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T07:09:11.327Z"
+    },
+    {
+      "id": "bug-007",
+      "timestamp": "2026-05-21T07:09:49.914Z",
+      "error_message": "Wrong condition in logic",
+      "file": "main/main.c",
+      "root_cause": "Condition was: if (state == STATE_SCREENSAVER)",
+      "fix": "Changed to: if (state == STATE_SCREENSAVER   ||\n            state )",
+      "tags": [
+        "auto-detected",
+        "logic-fix",
+        "c"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T07:09:49.914Z"
+    },
+    {
+      "id": "bug-008",
+      "timestamp": "2026-05-21T07:16:50.285Z",
+      "error_message": "Significant refactor of ",
+      "file": "main/screensaver.c",
+      "root_cause": "40 lines replaced/restructured",
+      "fix": "Rewrote 72→46 lines (40 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "c"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T07:16:50.285Z"
+    },
+    {
+      "id": "bug-009",
+      "timestamp": "2026-05-21T07:20:31.970Z",
+      "error_message": "Wrong reference: 10000 should be 6000",
+      "file": "main/app_state.h",
+      "root_cause": "Used \"10000\" instead of \"6000\"",
+      "fix": "Changed 10000 → 6000",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "h"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T07:20:31.970Z"
+    },
+    {
+      "id": "bug-010",
+      "timestamp": "2026-05-21T07:32:13.994Z",
+      "error_message": "Wrong operator: || should be >=",
+      "file": "main/main.c",
+      "root_cause": "Used \"||\" instead of \">=\"",
+      "fix": "Changed operator || → >=",
+      "tags": [
+        "auto-detected",
+        "operator-fix",
+        "c"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T07:32:13.994Z"
+    },
+    {
+      "id": "bug-011",
+      "timestamp": "2026-05-21T07:38:43.278Z",
+      "error_message": "Significant refactor of ",
+      "file": "main/calibration.c",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 6→8 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "c"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T07:38:43.278Z"
+    },
+    {
+      "id": "bug-012",
+      "timestamp": "2026-05-21T07:38:57.357Z",
+      "error_message": "Incorrect value in code",
+      "file": "main/calibration.c",
+      "root_cause": "Had \"TAP %d OF 3\"",
+      "fix": "Changed to \"TAP %d OF 4\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "c"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-21T07:38:57.357Z"
     }
   ]
 }

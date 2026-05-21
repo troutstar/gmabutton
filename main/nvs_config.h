@@ -15,3 +15,10 @@ esp_err_t nvs_config_save(void);
 
 /* Wipe the namespace and request a restart. Does not return. */
 void nvs_config_factory_reset(void);
+
+/* Restart without wiping any settings. Does not return. */
+void nvs_config_reboot(void);
+
+/* Load / save touch calibration blob. */
+void nvs_config_cal_load(void);
+void nvs_config_cal_save(void);

@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-21T06:50:55.718Z
-> Files: 85 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-21T07:39:31.640Z
+> Files: 88 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/projects/C--Users-Troutstar-Desktop-Ideas-gmabutton/memory/
 
@@ -30,7 +30,7 @@
 
 ## .claude/
 
-- `settings.json` (~518 tok)
+- `settings.json` (~622 tok)
 - `settings.local.json` (~167 tok)
 
 ## .claude/rules/
@@ -41,10 +41,10 @@
 
 - `alert.c` — include "alert.h" (~567 tok)
 - `alert.h` — pragma once (~108 tok)
-- `app_state.h` — pragma once (~790 tok)
-- `calibration.c` — include "calibration.h" (~1074 tok)
+- `app_state.h` — pragma once (~943 tok)
+- `calibration.c` — include "calibration.h" (~1062 tok)
 - `calibration.h` — pragma once (~92 tok)
-- `CMakeLists.txt` — CMake build configuration (~129 tok)
+- `CMakeLists.txt` (~151 tok)
 - `draw.c` — include "draw.h" (~1990 tok)
 - `draw.h` — pragma once (~579 tok)
 - `http_server.c` — include "http_server.h" (~3291 tok)
@@ -52,16 +52,19 @@
 - `idf_component.yml` — # ESP-IDF component manifest for the main component. (~66 tok)
 - `ili9341.c` — include "ili9341.h" (~1263 tok)
 - `ili9341.h` — pragma once (~128 tok)
-- `led.c` — include "led.h" (~271 tok)
-- `led.h` — pragma once (~86 tok)
-- `main.c` — include "app_state.h" (~2605 tok)
-- `nvs_config.c` — include "nvs_config.h" (~1019 tok)
-- `nvs_config.h` — pragma once (~144 tok)
+- `led.c` — include "led.h" (~268 tok)
+- `led.h` — pragma once (~87 tok)
+- `main.c` — include "app_state.h" (~3128 tok)
+- `nvs_config.c` — include "nvs_config.h" (~1224 tok)
+- `nvs_config.h` — pragma once (~187 tok)
 - `peer_comms.c` — include "peer_comms.h" (~620 tok)
 - `peer_comms.h` — pragma once (~61 tok)
-- `screensaver.c` — include "screensaver.h" (~2016 tok)
-- `screensaver.h` — pragma once (~118 tok)
-- `touch.c` — include "touch.h" (~1248 tok)
+- `screensaver_geiss.c` — include "screensaver_geiss.h" (~96 tok)
+- `screensaver_geiss.h` — pragma once (~32 tok)
+- `screensaver_noofcyd.h` — pragma once (~34 tok)
+- `screensaver.c` — include "screensaver.h" (~1358 tok)
+- `screensaver.h` — pragma once (~257 tok)
+- `touch.c` — include "touch.h" (~1393 tok)
 - `touch.h` — pragma once (~337 tok)
 - `wifi_manager.c` — include "wifi_manager.h" (~1080 tok)
 - `wifi_manager.h` — pragma once (~102 tok)

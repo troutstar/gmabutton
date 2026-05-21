@@ -5,9 +5,21 @@
       "PowerShell(python -m esptool *)",
       "PowerShell(esptool.py *)",
       "PowerShell(New-Item *)",
+      "PowerShell(Copy-Item *)",
+      "PowerShell(Rename-Item *)",
+      "PowerShell(Remove-Item *)",
+      "PowerShell(Set-Location *)",
+      "PowerShell(*merge_bin*)",
+      "PowerShell(*write_flash*)",
+      "PowerShell(*export.ps1*)",
+      "PowerShell(*IDF_TOOLS_PATH*)",
       "Bash(idf.py *)",
       "Bash(python -m esptool *)",
-      "Bash(esptool.py *)"
+      "Bash(esptool.py *)",
+      "Bash(git *)",
+      "Bash(ls *)",
+      "Bash(grep *)",
+      "Bash(cat *)"
     ]
   },
   "hooks": {

@@ -4,6 +4,7 @@
 #include "led.h"
 #include "touch.h"
 #include "screensaver.h"
+#include "calibration.h"
 #include "alert.h"
 #include "nvs_config.h"
 #include "wifi_manager.h"
@@ -40,13 +41,13 @@ app_state_t app_get_state(void)
 /* ── Local gesture → action mapping ─────────────────────────────────────── */
 static void handle_gesture(gesture_t g)
 {
-    /* Factory-reset hold works from any mode. */
+    /* 10s hold from any mode opens the system menu. */
     if (g == GESTURE_LONG_HOLD) {
-        ESP_LOGW(TAG, "factory reset triggered");
-        led_set(true, true, true);
-        vTaskDelay(pdMS_TO_TICKS(300));
-        nvs_config_factory_reset();
-        return;  /* unreachable */
+        g_ctx.menu_sel        = 0;
+        g_ctx.menu_entered_ms = (uint32_t)(esp_timer_get_time() / 1000);
+        led_green();
+        app_set_state(STATE_SYSTEM_MENU);
+        return;
     }
     if (g_ctx.config_mode) return;  /* setup wizard owns the UI */
 
@@ -91,6 +92,48 @@ static void handle_gesture(gesture_t g)
         }
         break;
 
+    case STATE_SYSTEM_MENU:
+        /* Each option occupies an equal zone; tap position selects. */
+        if (g == GESTURE_TAP) {
+            uint16_t y = g_ctx.last_touch_y;
+            if (y < 80) {
+                g_ctx.menu_entered_ms = (uint32_t)(esp_timer_get_time() / 1000);
+                app_set_state(STATE_SS_PICKER);
+            } else if (y < 160) {
+                led_off();
+                nvs_config_reboot();        /* never returns */
+            } else {
+                g_ctx.menu_entered_ms = (uint32_t)(esp_timer_get_time() / 1000);
+                app_set_state(STATE_FACTORY_RESET_CONFIRM);
+            }
+        }
+        break;
+
+    case STATE_SS_PICKER:
+        /* Top half = first screensaver, bottom half = second. */
+        if (g == GESTURE_TAP) {
+            uint8_t sel = (g_ctx.last_touch_y >= SCREEN_H / 2) ? 1 : 0;
+            screensaver_switch(sel);
+            led_off();
+            app_set_state(STATE_SCREENSAVER);
+        }
+        break;
+
+    case STATE_FACTORY_RESET_CONFIRM:
+        /* Top half = Cancel, bottom half = Confirm. */
+        if (g == GESTURE_TAP) {
+            if (g_ctx.last_touch_y >= SCREEN_H / 2) {
+                ESP_LOGW(TAG, "factory reset confirmed");
+                led_set(true, true, true);
+                vTaskDelay(pdMS_TO_TICKS(300));
+                nvs_config_factory_reset(); /* never returns */
+            } else {
+                led_off();
+                app_set_state(STATE_SCREENSAVER);
+            }
+        }
+        break;
+
     default:
         break;
     }
@@ -116,7 +159,10 @@ static void render_task(void *arg)
         }
         state = g_ctx.state;
 
-        if (state == STATE_SCREENSAVER) {
+        if (state == STATE_SCREENSAVER   ||
+            state == STATE_SYSTEM_MENU   ||
+            state == STATE_SS_PICKER     ||
+            state == STATE_FACTORY_RESET_CONFIRM) {
             uint32_t now = (uint32_t)(esp_timer_get_time() / 1000);
             screensaver_step();
 
@@ -238,9 +284,17 @@ void app_main(void)
     led_init();
     ili9341_init(&s_spi);
     touch_init();
+    xpt2046_spi_init();     /* must come after ili9341_init (same SPI bus) */
 
     nvs_config_init();
     nvs_config_load();
+
+    /* Touch calibration — run UI if no saved cal data */
+    nvs_config_cal_load();
+    if (!g_ctx.cal.valid) {
+        calibration_run(s_spi, s_fb, &g_ctx.cal);
+        nvs_config_cal_save();
+    }
 
     /* config mode pulses white via the screensaver hint instead — keep the
        LED off; the user knows they're in setup from the screen. */

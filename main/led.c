@@ -29,6 +29,7 @@ void led_set(bool r, bool g, bool b)
 }
 
 void led_red(void)   { led_set(true,  false, false); }
+void led_green(void) { led_set(false, true,  false); }
 void led_blue(void)  { led_set(false, false, true ); }
 void led_white(void) { led_set(true,  true,  true ); }
 void led_off(void)   { led_set(false, false, false); }

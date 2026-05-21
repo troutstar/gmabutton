@@ -100,3 +100,41 @@ void nvs_config_factory_reset(void)
     }
     esp_restart();
 }
+
+void nvs_config_reboot(void)
+{
+    ESP_LOGI(TAG, "reboot requested");
+    esp_restart();
+}
+
+/* Increment this whenever the calibration format or point layout changes. */
+#define CAL_VERSION 2
+
+void nvs_config_cal_load(void)
+{
+    nvs_handle_t h;
+    if (nvs_open(NS, NVS_READONLY, &h) == ESP_OK) {
+        uint8_t ver = 0;
+        nvs_get_u8(h, "cal_ver", &ver);
+        if (ver == CAL_VERSION) {
+            size_t sz = sizeof(cal_data_t);
+            if (nvs_get_blob(h, "cal", &g_ctx.cal, &sz) != ESP_OK)
+                g_ctx.cal.valid = false;
+        } else {
+            g_ctx.cal.valid = false;   /* stale version — force recalibration */
+        }
+        nvs_close(h);
+    }
+}
+
+void nvs_config_cal_save(void)
+{
+    nvs_handle_t h;
+    if (nvs_open(NS, NVS_READWRITE, &h) == ESP_OK) {
+        nvs_set_blob(h, "cal", &g_ctx.cal, sizeof(cal_data_t));
+        nvs_set_u8(h, "cal_ver", CAL_VERSION);
+        nvs_commit(h);
+        nvs_close(h);
+        ESP_LOGI(TAG, "calibration saved (v%d)", CAL_VERSION);
+    }
+}

@@ -7,6 +7,7 @@
 void led_init(void);
 void led_set(bool r, bool g, bool b);     /* true = ON */
 void led_red(void);
+void led_green(void);
 void led_blue(void);
 void led_white(void);
 void led_off(void);

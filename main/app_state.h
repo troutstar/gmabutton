@@ -7,16 +7,26 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+/* Linear touch calibration: screen_coord = a * raw + b */
+typedef struct {
+    float ax, bx;
+    float ay, by;
+    bool  valid;
+} cal_data_t;
+
 #define DEFAULT_PEER_PORT       8080
 #define DISMISS_TIMEOUT_MS      4000
-#define FACTORY_RESET_HOLD_MS   10000
+#define FACTORY_RESET_HOLD_MS   6000
 
 typedef enum {
     STATE_SCREENSAVER = 0,
-    STATE_ALERT_CALL,        /* blue */
-    STATE_ALERT_HELP,        /* red  */
-    STATE_DISMISS_PENDING,   /* alert active + dismiss overlay shown */
-    STATE_CONFIG_MODE,       /* AP active, setup wizard served */
+    STATE_ALERT_CALL,              /* blue */
+    STATE_ALERT_HELP,              /* red  */
+    STATE_DISMISS_PENDING,         /* alert active + dismiss overlay shown */
+    STATE_CONFIG_MODE,             /* AP active, setup wizard served */
+    STATE_SYSTEM_MENU,             /* 10s-hold menu: Screensaver / Factory Reset */
+    STATE_SS_PICKER,               /* screensaver selection list */
+    STATE_FACTORY_RESET_CONFIRM,   /* Cancel / Confirm Reset */
 } app_state_t;
 
 typedef enum {
@@ -68,6 +78,16 @@ typedef struct {
     bool     is_local_alert;      /* true = this device initiated; false = received from peer */
     bool     holding;             /* finger currently on screen (set by touch_task) */
     uint32_t hold_start_ms;       /* esp_timer ms when current hold began */
+
+    /* Screensaver manager */
+    uint8_t  active_ss;           /* screensaver_id_t */
+    uint8_t  menu_sel;            /* used only by factory-reset confirm screen */
+    uint32_t menu_entered_ms;     /* esp_timer ms when current menu was opened */
+
+    /* Touch calibration and last sampled position */
+    cal_data_t cal;
+    uint16_t   last_touch_x;
+    uint16_t   last_touch_y;
 } app_ctx_t;
 
 extern app_ctx_t g_ctx;

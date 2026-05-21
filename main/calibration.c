@@ -12,22 +12,24 @@
 static const char *TAG = "cal";
 
 /* Three calibration targets in screen coordinates */
-static const int CAL_PTS = 3;
-static const int TARGET_X[3] = {  30, 290,  30 };
-static const int TARGET_Y[3] = {  30,  30, 210 };
+static const int CAL_PTS = 4;
+static const int TARGET_X[4] = {  40, 280, 280,  40 };
+static const int TARGET_Y[4] = {  40,  40, 200, 200 };
 
 static void draw_target(uint16_t *fb, int cx, int cy)
 {
-    draw_line(fb, cx - 15, cy, cx + 15, cy, COL_WHITE);
-    draw_line(fb, cx, cy - 15, cx, cy + 15, COL_WHITE);
-    draw_fill_rect(fb, cx - 3, cy - 3, 6, 6, COL_YELLOW);
+    /* Crosshair arms — long enough for adult finger reference */
+    draw_line(fb, cx - 28, cy, cx + 28, cy, COL_WHITE);
+    draw_line(fb, cx, cy - 28, cx, cy + 28, COL_WHITE);
+    /* Large filled centre dot */
+    draw_filled_circle(fb, cx, cy, 10, COL_YELLOW);
 }
 
 static void render_and_blit(spi_device_handle_t disp_spi, uint16_t *fb,
                              int cx, int cy, int step)
 {
     char label[24];
-    snprintf(label, sizeof(label), "TAP %d OF 3", step + 1);
+    snprintf(label, sizeof(label), "TAP %d OF 4", step + 1);
 
     /* Top strip */
     g_fb_y_offset = 0;
@@ -85,9 +87,10 @@ void calibration_run(spi_device_handle_t disp_spi, uint16_t *fb, cal_data_t *out
                  i, TARGET_X[i], TARGET_Y[i], raw_x[i], raw_y[i]);
     }
 
-    /* Compute linear transform from two axis spans */
+    /* X calibration: points 0 (top-left) and 1 (top-right) span the full X range.
+       Y calibration: points 0 (top-left) and 3 (bottom-left) span the full Y range. */
     float dx_raw = (float)raw_x[1] - (float)raw_x[0];
-    float dy_raw = (float)raw_y[2] - (float)raw_y[0];
+    float dy_raw = (float)raw_y[3] - (float)raw_y[0];
 
     if (dx_raw == 0.0f || dy_raw == 0.0f) {
         ESP_LOGW(TAG, "degenerate calibration, using identity");
@@ -99,7 +102,7 @@ void calibration_run(spi_device_handle_t disp_spi, uint16_t *fb, cal_data_t *out
 
     out->ax = (TARGET_X[1] - TARGET_X[0]) / dx_raw;
     out->bx = TARGET_X[0] - out->ax * raw_x[0];
-    out->ay = (TARGET_Y[2] - TARGET_Y[0]) / dy_raw;
+    out->ay = (TARGET_Y[3] - TARGET_Y[0]) / dy_raw;
     out->by = TARGET_Y[0] - out->ay * raw_y[0];
     out->valid = true;
 

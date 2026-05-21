@@ -1,4 +1,5 @@
 #include "touch.h"
+#include "draw.h"
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
 #include "esp_timer.h"
@@ -118,6 +119,24 @@ void touch_task(void *arg)
                 g_ctx.holding = true;
                 g_ctx.hold_start_ms = t;
                 s = DOWN;
+
+                /* Sample and store calibrated touch position */
+                uint16_t rx, ry;
+                if (xpt2046_sample(&rx, &ry)) {
+                    if (g_ctx.cal.valid) {
+                        int sx = (int)(g_ctx.cal.ax * rx + g_ctx.cal.bx);
+                        int sy = (int)(g_ctx.cal.ay * ry + g_ctx.cal.by);
+                        if (sx < 0) sx = 0;
+                        if (sx >= SCREEN_W) sx = SCREEN_W - 1;
+                        if (sy < 0) sy = 0;
+                        if (sy >= SCREEN_H) sy = SCREEN_H - 1;
+                        g_ctx.last_touch_x = (uint16_t)sx;
+                        g_ctx.last_touch_y = (uint16_t)sy;
+                    } else {
+                        g_ctx.last_touch_x = rx;
+                        g_ctx.last_touch_y = ry;
+                    }
+                }
             }
             break;
 
