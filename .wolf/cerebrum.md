@@ -6,6 +6,8 @@
 
 ## User Preferences
 
+- **Flash confirmation protocol:** Ask the user once ("Ready to flash both devices?"). When they say yes, that covers the entire sequence — build, merge, copy, flash COM5 merged, flash COM5 NVS, flash COM7 merged, flash COM7 NVS. Do NOT pause mid-sequence for additional tool permission prompts. The upfront "yes" is the only confirmation needed.
+- **Flash workflow — ALWAYS flash BOTH merged binary AND NVS every time:** merged at 0x0, then NVS at 0x9000. Never skip the NVS step — the merged binary erases 0x9000 so credentials are wiped without it.
 - **Flash workflow — always two separate esptool commands:** (1) `idf.py merge-bin -o <absolute_path>_merged.bin` then flash merged at `0x0`, (2) flash `gmabutton1_config.bin` (or `gmabutton2_config.bin`) at `0x9000` as a separate esptool call. Never combine them in one write_flash — the merged binary covers 0x9000 and esptool errors with "Detected overlap".
 - **ESP-IDF v5.5.3 Windows one-shot PowerShell:** `Remove-Item Env:MSYSTEM -ErrorAction SilentlyContinue; $env:IDF_TOOLS_PATH = "C:\Espressif"; . "C:\Espressif\frameworks\esp-idf-v5.5.3\export.ps1" 2>&1 | Out-Null; idf.py ...`
 
@@ -26,5 +28,7 @@
 - [2026-05-17] Do NOT pass a relative path to `idf.py merge-bin -o` — esptool cds into build/ first, making the path wrong. Use absolute path.
 
 ## Decision Log
+
+- [2026-05-21] Screensaver replaced with noof port. The `s_fb` strip buffer is NOT persistent across frames (reused for both strips each render cycle), so GL-style accumulation is impossible without a separate full-frame buffer. Chose trail-history approach (TRAIL_LEN=5 positions per shape) instead. noof's GL alpha-blended fill is skipped; only the colored line-loop outline is drawn (4 lines per blade). Velocity scaled ×8 over noof's defaults to compensate for ~80ms ESP32 frame vs noof's 10ms target.
 
 <!-- Significant technical decisions with rationale. Why X was chosen over Y. -->

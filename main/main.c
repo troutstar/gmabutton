@@ -104,8 +104,6 @@ static void render_task(void *arg)
 {
     (void)arg;
     screensaver_init();
-    uint32_t last_step = 0;
-
     for (;;) {
         app_state_t state;
         /* dismiss-pending auto-times-out back to the alert it interrupted */
@@ -120,10 +118,7 @@ static void render_task(void *arg)
 
         if (state == STATE_SCREENSAVER) {
             uint32_t now = (uint32_t)(esp_timer_get_time() / 1000);
-            if (now - last_step >= 50) {
-                screensaver_step();
-                last_step = now;
-            }
+            screensaver_step();
 
             /* Hold-progress animation: expanding circle over screensaver */
             if (g_ctx.holding) {

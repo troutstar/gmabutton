@@ -1,11 +1,23 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-18T08:29:54.869Z
-> Files: 82 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-21T06:50:55.718Z
+> Files: 85 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/projects/C--Users-Troutstar-Desktop-Ideas-gmabutton/memory/
 
-- `feedback_flash_permissions.md` (~202 tok)
+- `feedback_flash_permissions.md` (~368 tok)
+
+## ../flashtool/
+
+- `flashtool.py` — Flask local web server for flashing ESP32 firmware via browser UI, serves on 127.0.0.1:5757 (~1349 tok)
+- `requirements.txt` — flask, pyserial, esptool (~10 tok)
+
+## ../flashtool/firmware/
+
+
+## ../flashtool/www/
+
+- `index.html` — ESP Flash Tool single-file dark UI; single/multi bin mode, SSE console, port auto-refresh (~6070 tok)
 
 ## ./
 
@@ -42,12 +54,12 @@
 - `ili9341.h` — pragma once (~128 tok)
 - `led.c` — include "led.h" (~271 tok)
 - `led.h` — pragma once (~86 tok)
-- `main.c` — include "app_state.h" (~2826 tok)
+- `main.c` — include "app_state.h" (~2605 tok)
 - `nvs_config.c` — include "nvs_config.h" (~1019 tok)
 - `nvs_config.h` — pragma once (~144 tok)
 - `peer_comms.c` — include "peer_comms.h" (~620 tok)
 - `peer_comms.h` — pragma once (~61 tok)
-- `screensaver.c` — include "screensaver.h" (~1360 tok)
+- `screensaver.c` — include "screensaver.h" (~2016 tok)
 - `screensaver.h` — pragma once (~118 tok)
 - `touch.c` — include "touch.h" (~1248 tok)
 - `touch.h` — pragma once (~337 tok)
